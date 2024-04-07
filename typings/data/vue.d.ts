@@ -1,7 +1,4 @@
-import type { ParamsNest } from 'ssr-plugin-vue3'
-import { IndexData } from './page-index'
-import { Ddata } from './detail-index'
-
+import type { ParamsNest } from 'ssr-plugin-vue'
 interface IApiService {
   index: () => Promise<IndexData>
 }
