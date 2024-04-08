@@ -1,6 +1,5 @@
 
 import tagVer from './../../version'
-import { trackEvent  } from '@/utils/common/track'
 import { GlobalEventEmitter } from '@/utils/common/eventEmitter'
 console.log(`Current tag version number:${tagVer}`);
 /**
@@ -27,11 +26,6 @@ window.onresize = () => {
     document.activeElement.scrollIntoView({ behavior: 'smooth' })
   }
 }
-/**
- * @description: 全局注册：埋点函数
- * @param {}
- * @return:void
- */
-window.trackEvent = trackEvent
+
 window.GlobalEventEmitter = GlobalEventEmitter
 setFontSize()

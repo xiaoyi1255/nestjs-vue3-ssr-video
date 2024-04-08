@@ -155,7 +155,6 @@ const initVideo = () => {
   console.log("initVideo");
   const id = `video-${props.index}-${props.item.videoBaseInfo.contentId}`;
   if (!player.instance) { // 播放器被销毁过
-    console.log("播放器被销毁过", "重新创建", videojs);
     const innerHTML = `
     <video class=video-item video-js vjs-big-play-centered vjs-fluid ${markChange.value} id=${id} 
       style="width:${videoStyle.value[0].width};height:${videoStyle.value[0].height || '100vh'};"
@@ -257,15 +256,10 @@ const initVideo = () => {
         isError = false
         Toast.clear()
         sessionStorage.setItem('playingVideo', JSON.stringify(props.item))
-        store.commit('videoStore/setPlayIndex', props.index - 1)
       })
       this.on('pause', function () {
         player.status = 'pause'
         percentageObj.isPause = true
-        if (isWaiting) {
-        }
-        if (isError) {
-        }
       })
       this.on('waiting', function () {
         console.log('等待数据，播放器处于缓冲过程中')
@@ -322,39 +316,12 @@ const changeMuted = () => {
 
 // 收藏、取消收藏
 const changeCollect = async() => {
-  // clearTimeout(timer)
-  Toast.loading('')
-  let params = {
-    uid: sessionStorage.getItem('uid') || '',
-    type: videoInfo.collected ? 'VIDEO_DIS_LIKE' : 'VIDEO_LIKE',
-    contentId: props.item.videoBaseInfo.contentId || '',
-  }
   videoInfo.collected = !videoInfo.collected
-  // const videoIds = JSON.parse(localStorage.getItem('videoIds') || '[]') || []
-  // const idx = videoIds.findIndex((item: number) => item === +props.item.videoBaseInfo.contentId) // 判断是否已经收藏过
-  // if (videoInfo.collected) {
-  //   if (idx === -1) {
-  //     videoIds.push(props.item.videoBaseInfo.contentId)
-  //     localStorage.setItem('videoIds', JSON.stringify(videoIds))
-  //   }
-  // } else {
-  //   console.log('取消收藏', idx)
-  //   if (idx !== -1) {
-  //     videoIds.splice(idx, 1)
-  //     localStorage.setItem('videoIds', JSON.stringify(videoIds))
-  //   }
-  // }
-  // to do 调接口
-  try {
-  } catch (error) {
-    Toast.clear()
-  }
 }
 
 
 // 关注、取消关注 
 const changeFollow = (status: number) => {
-  const uid = sessionStorage.getItem('uid') || 0
   Toast.loading({
     message: 'Loading...',
     forbidClick: true,
@@ -387,10 +354,6 @@ onMounted(() => {
     nextTick(() => {
       props.index<3 && initVideo()
     })
-    // const videoIds = JSON.parse(localStorage.getItem('videoIds') || '[]') || []
-    // if (videoIds?.includes(props.item?.videoBaseInfo?.contentId)) {
-    //   videoInfo.collected = true
-    // }
   } catch (error) {
     console.log(error)
   }

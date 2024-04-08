@@ -16,6 +16,7 @@ import { ref, onMounted, getCurrentInstance, onUnmounted, watch, computed, defin
 import { Toast } from 'vant';
 import VideoItem from './components/videoItem.vue';
 import { useStore } from 'vuex';
+import { videoList as VIDEO_LIST } from '@/mock/videos';
 
 const emit = defineEmits(['getVideoList', 'showUserIcon'])
 const { proxy } = getCurrentInstance()
@@ -25,7 +26,7 @@ const videoList = ref<any>([])
 const isMuted = ref(true)
 const swiperRef = ref(null)
 
-const list:any = computed(()=> store.state.indexStore.videoList || [])
+const list:any = computed(()=> VIDEO_LIST || [])
 
 const handleNext = () => {
   swiperRef.value?.next();
@@ -33,18 +34,44 @@ const handleNext = () => {
 
 // 切换上、下视频， 播放当前，暂停 上、下
 let cureentIndex = ref(0)
-let videoIdx = 0
 const changeVideo = (index: number) => {
   cureentIndex.value = index;
   if (videoList.value.length - 3 === index) {
     onLoad()
   }
-  const player = proxy.$refs.videoItemRef[videoIdx]?.player?.instance
-  const player1 = proxy.$refs.videoItemRef[videoIdx - 1]?.player?.instance
-  const player2 = proxy.$refs.videoItemRef[videoIdx + 1]?.player?.instance
+  loadNextVideo()
+  const player = proxy.$refs.videoItemRef[cureentIndex.value]?.player?.instance
+  const player1 = proxy.$refs.videoItemRef[cureentIndex.value - 1]?.player?.instance
+  const player2 = proxy.$refs.videoItemRef[cureentIndex.value + 1]?.player?.instance
   player1?.pause()
   player2?.pause()
   player?.play()
+}
+
+/**
+ * 进视频预热 + 播放器删除
+ */
+ const loadNextVideo = () => {
+  let nextVideo = proxy.$refs.videoItemRef[cureentIndex.value +1]
+  let preVideo = proxy.$refs.videoItemRef[cureentIndex.value -1]
+  if (nextVideo && !nextVideo.player?.instance){
+    console.log(nextVideo, 'init next Video')
+    nextVideo?.initVideo()
+  }
+  if (preVideo && !preVideo.player?.instance){
+    console.log(preVideo, 'init pre Video')
+    preVideo?.initVideo()
+  }
+
+  // 大于4个视频时删除第一个视频
+  if (cureentIndex.value >= 3) {
+    const player = proxy.$refs.videoItemRef[cureentIndex.value-3]?.player
+    if (player?.instance) {
+      console.log(player.instance, '移除播放器')
+      player.instance.dispose()
+      player.instance = null
+    }
+  }
 }
 
 const visibilityFn = () => {

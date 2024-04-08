@@ -22,13 +22,11 @@
   </div>
 </template>
 <script lang="ts" setup>
-import { defineProps, defineEmits, computed, getCurrentInstance } from 'vue'
+import { defineProps, defineEmits, computed, watch } from 'vue'
 import { Toast } from 'vant'
 import { useRouter } from 'vue-router'
 import avatarImg from "@/assets/images/avatar.png";
 import { useStore } from 'vuex';
-import { watch } from 'vue';
-const { proxy } = getCurrentInstance()
 
 const props = defineProps<{
   videoInfo: {
@@ -72,7 +70,6 @@ const comments = computed(() => formatNumber(props.item.videoStatisticsInfo.comm
 const showCommentPop = () =>{
   store.commit("indexStore/setComData", { key: 'showCommentPop', value: true })
   store.commit("indexStore/setComData", { key: 'showCommentData', value: {contentId: props.item.videoBaseInfo.contentId, comments: props.item.videoStatisticsInfo.comments} })
-
 }
 
 function formatNumber(number: number) {
@@ -96,7 +93,7 @@ const copyTxt = (val: string) => {
   input.select();
   document.execCommand("copy");
   document.body.removeChild(input);
-  Toast(proxy.$t('link copied'))
+  Toast('link copied')
 }
 
 const changeFollow = (status: 0 | 1) => {
