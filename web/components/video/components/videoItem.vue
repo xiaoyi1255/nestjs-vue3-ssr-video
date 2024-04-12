@@ -10,28 +10,29 @@
       </video> -->
     </div>
 
-    <!-- 右侧边栏 -->
-    <div class="like-warpper">
-      <Like :item="item" :videoInfo="videoInfo" @changeCollect="changeCollect" @changeFollow="changeFollow" />
-    </div>
-
-    <!-- 播放暂停按钮 -->
-    <div v-if="['pause', 'canplay', 'ended'].includes(player.status)">
-      <div class="play-btn bg" @click="changePlay(1)"></div>
-    </div>
-
-    <!-- 底部信息 -->
-    <div class="bottom-info">
-      <div class="info-left" @click="goMePage">
-        <div class="author overflowEllipsis">@{{ item?.videoBaseInfo?.title || '---' }}</div>
-        <div class="title lines-ellipsis-2">{{ item.videoBaseInfo.description }}</div>
+    <div>
+      <!-- 右侧边栏 -->
+      <div class="like-warpper">
+        <Like :item="item" :videoInfo="videoInfo" @changeCollect="changeCollect" @changeFollow="changeFollow" />
+      </div>
+  
+      <!-- 播放暂停按钮 -->
+      <div v-if="['pause', 'canplay', 'ended'].includes(player.status)">
+        <div class="play-btn bg" @click="changePlay(1)"></div>
+      </div>
+  
+      <!-- 底部信息 -->
+      <div class="bottom-info">
+        <div class="info-left" @click="goMePage">
+          <div class="author overflowEllipsis">@{{ item?.videoBaseInfo?.title || '---' }}</div>
+          <div class="title lines-ellipsis-2">{{ item.videoBaseInfo.description }}</div>
+        </div>
+      </div>
+      <!-- 进度条 -->
+      <div v-show="player.status !== 'playing' && percentage" class="progress" @click.capture="changePercentage">
+        <Progress :percentage="percentage" stroke-width="2" :pivot-text="' '" color="rgb(255, 255, 255)" />
       </div>
     </div>
-    <!-- 进度条 -->
-    <div v-show="player.status !== 'playing' && percentage" class="progress" @click.capture="changePercentage">
-      <Progress :percentage="percentage" stroke-width="2" :pivot-text="' '" color="rgb(255, 255, 255)" />
-    </div>
-    <!-- <img class="muted" @click="changeMuted" v-if="isMuted" src="@/assets/images/video/svg/muted.svg" /> -->
   </div>
 </template>
 <script setup lang="ts">

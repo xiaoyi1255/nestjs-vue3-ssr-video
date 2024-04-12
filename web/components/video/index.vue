@@ -34,12 +34,14 @@ const handleNext = () => {
 
 // 切换上、下视频， 播放当前，暂停 上、下
 let cureentIndex = ref(0)
+let maxIdx = 0
 const changeVideo = (index: number) => {
   cureentIndex.value = index;
+  maxIdx = Math.max(maxIdx, index)
   if (videoList.value.length - 3 === index) {
     onLoad()
   }
-  loadNextVideo()
+  loadNextVideo(maxIdx===index)
   const player = proxy.$refs.videoItemRef[cureentIndex.value]?.player?.instance
   const player1 = proxy.$refs.videoItemRef[cureentIndex.value - 1]?.player?.instance
   const player2 = proxy.$refs.videoItemRef[cureentIndex.value + 1]?.player?.instance
@@ -51,7 +53,7 @@ const changeVideo = (index: number) => {
 /**
  * 进视频预热 + 播放器删除
  */
- const loadNextVideo = () => {
+ const loadNextVideo = (isMax = false) => {
   let nextVideo = proxy.$refs.videoItemRef[cureentIndex.value +1]
   let preVideo = proxy.$refs.videoItemRef[cureentIndex.value -1]
   if (nextVideo && !nextVideo.player?.instance){
@@ -61,6 +63,13 @@ const changeVideo = (index: number) => {
   if (preVideo && !preVideo.player?.instance){
     console.log(preVideo, 'init pre Video')
     preVideo?.initVideo()
+  }
+  if (isMax) {
+    let nextVideo = proxy.$refs.videoItemRef[cureentIndex.value +2]
+    if (nextVideo && !nextVideo.player?.instance){
+      console.log(nextVideo, 'init next next Video')
+      nextVideo?.initVideo()
+    }
   }
 
   // 大于4个视频时删除第一个视频
@@ -93,6 +102,9 @@ onUnmounted(() => {
 
 // 拉取视频列表
 let i = 0
+/**
+ * 维护渲染列表
+ */
 const onLoad = async () => {
   try {
     i === 0 && Toast.loading({ message: 'loading...', forbidClick: true })
