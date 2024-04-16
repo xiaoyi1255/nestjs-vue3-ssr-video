@@ -25,7 +25,7 @@ interface QueryType {
 export class AppController {
   constructor (private readonly apiService: ApiService) {}
 
-  @Get('/')
+  @Get('/video')
   async handlerIndex (@Req() req: Request, @Res() res: Response, @Query() query: QueryType): Promise<any> {
     try {
 

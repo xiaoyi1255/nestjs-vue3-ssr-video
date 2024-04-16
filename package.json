@@ -27,8 +27,7 @@
     "vue-router": "^4.0.0",
     "vue3-count-to": "^1.1.2",
     "vuex": "^4.0.0",
-    "vuex-persistedstate": "^4.1.0",
-    "xgplayer": "^3.0.13"
+    "vuex-persistedstate": "^4.1.0"
   },
   "devDependencies": {
     "@babel/runtime-corejs2": "^7.24.4",
@@ -46,7 +45,7 @@
     "prod": "yarn && cross-env USE_ENV=production ssr build && pm2-runtime start pm2.config.js",
     "tech": "yarn && cross-env USE_ENV=tech ssr build && pm2-runtime start pm2dev.config.js",
     "stop": "pm2 stop pm2.config.js",
-    "start": "cross-env USE_ENV=development VUE_APP_BASE_URL=https://h5.yowin.tech  VUE_APP_BASE_URL_V2=https://s.yowin.tech ssr start",
+    "start": "cross-env USE_ENV=development ssr start",
     "dev": "yarn start",
     "start:vite": "ssr start --vite",
     "build": "ssr build",

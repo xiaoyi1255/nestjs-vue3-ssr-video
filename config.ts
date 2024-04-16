@@ -1,7 +1,7 @@
 import type { UserConfig } from 'ssr-types'
 
 const userConfig: UserConfig = {
-  serverPort: 8888,
+  serverPort: 8088,
   host: '0.0.0.0',
   proxy: {
     // '/api': {
