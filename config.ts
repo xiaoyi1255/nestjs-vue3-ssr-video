@@ -17,6 +17,7 @@ const userConfig: UserConfig = {
       },
     }
   },
+  babelExtraModule: [/node_modlues\/video.js/]
 }
 
 export { userConfig }
